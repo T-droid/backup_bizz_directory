@@ -1,0 +1,28 @@
+<!-- home.component.html -->
+
+<div class="container">
+  <h1>Welcome to Your Fitness App</h1>
+  <div class="category-list">
+    <div class="category-card" *ngFor="let category of categories">
+      <div class="category-details">
+        <h2>{{ category.name }}</h2>
+        <p *ngIf="category.showDescription" (click)="toggleDescription(category)">
+          {{ category.description }}
+        </p>
+        <ul>
+          <li *ngFor="let exercise of category.exercise_types">
+            <strong>{{ exercise.name }}</strong>
+            <img *ngIf="exercise.gifUrl" [src]="exercise.gifUrl" alt="{{ exercise.name }} GIF" class="exercise-gif">
+            <ul>
+              <li *ngFor="let instruction of exercise.instructions">{{ instruction }}</li>
+            </ul>
+          </li>
+        </ul>
+        <p *ngIf="!category.enrolled" id="text"> To track your progress enroll</p>
+        <button (click)="enroll(category)">
+          {{ category.enrolled ? 'Continue' : 'Enroll' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

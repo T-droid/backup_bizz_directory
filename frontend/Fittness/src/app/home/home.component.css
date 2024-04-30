@@ -1,0 +1,63 @@
+/* home.component.css */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .category-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+  }
+  
+  .category-image {
+    height: 150px; /* Adjust as needed */
+    background-color: #ddd; /* Placeholder color */
+  }
+  
+  .category-details {
+    padding: 20px;
+  }
+  
+  h2 {
+    margin-top: 0;
+  }
+  
+  p {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+
+
+.exercise-gif {
+  max-width: 100px;
+  margin-bottom: 10px;
+  max-height: 100px;
+}
+
+#text{
+  color: #007bff;
+}
+
+  

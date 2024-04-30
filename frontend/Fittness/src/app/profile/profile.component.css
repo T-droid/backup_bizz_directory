@@ -1,0 +1,37 @@
+/* profile.component.css */
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.enrolled-programs {
+  margin-top: 20px;
+}
+
+.program {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9; /* Match background color used in other pages */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+.program h3 {
+  margin-top: 0;
+}
+
+button.delete-button {
+  background-color: #007bff; /* Match button color used in other pages */
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.delete-button:hover {
+  background-color: #0056b3; /* Match hover color used in other pages */
+}

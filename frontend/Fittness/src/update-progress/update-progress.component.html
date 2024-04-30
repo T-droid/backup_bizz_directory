@@ -1,0 +1,20 @@
+<!-- update-progress.component.html -->
+
+<div class="container">
+  <h1>Update Your Progress</h1>
+  <div *ngFor="let program of enrolledPrograms">
+    <h2>{{ program.name }}</h2>
+    <div *ngFor="let exercise of program.exercise_types">
+      <div class="exercise-card">
+        <h3>{{ exercise.name }}</h3>
+        <ul>
+          <li *ngFor="let instruction of exercise.instructions">{{ instruction }}</li>
+        </ul>
+        <label>
+          <input type="checkbox" [checked]="exercise.status" (change)="toggleExerciseStatus(program.id, exercise.id, $event)">
+          Done
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<!-- profile.component.html -->
+
+<div class="container">
+  <h1>Welcome, {{ username }}</h1>
+  <div class="enrolled-programs">
+    <h2>Enrolled Programs</h2>
+    <div *ngIf="enrolledPrograms.length > 0; else noPrograms">
+      <div *ngFor="let program of enrolledPrograms" class="program">
+        <h3>{{ program.name }}</h3>
+        <p>Progress: {{ program.progress }}%</p>
+        <button (click)="deleteProgram(program.id)" class="delete-button">Delete</button>
+      </div>
+    </div>
+    <ng-template #noPrograms>
+      <p>No programs enrolled yet.</p>
+    </ng-template>
+  </div>
+</div>
