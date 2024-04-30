@@ -9,6 +9,21 @@ const USER_KEY = 'auth-user';
 export class TokenStorageService {
   constructor() { }
 
+   // Function to set user ID in sessionStorage
+   setUserId(userId: string): void {
+    sessionStorage.setItem('userId', userId);
+  }
+
+  // Function to get user ID from sessionStorage
+  getUserId(): string | null {
+    return sessionStorage.getItem('userId');
+  }
+
+  // Function to clear user ID from sessionStorage (e.g., on logout)
+  clearUserId(): void {
+    sessionStorage.removeItem('userId');
+  }
+
   signOut(): void {
     window.sessionStorage.clear();
   }

@@ -10,47 +10,43 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   form: any = {
-    username: null,
-    password: null
+    email: '',
+    password: ''
   };
   isLoggedIn = false;
-  isLoginFailed = false;
+  loginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
-    if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().roles;
-    }
   }
 
   onSubmit(): void {
-    const { username, password } = this.form;
+    const { email, password } = this.form;
 
-    this.authService.login(username, password).subscribe({
-      next: data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
+    if (!email || !password) {
+      this.loginFailed = false;
+      this.errorMessage = 'Please enter both email and password.';
+      return; // Exit the function early if fields are missing
+    }
+  
 
-        this.isLoginFailed = false;
+    this.authService.login(email, password).subscribe(
+      response => {
+        this.tokenStorage.saveToken(response.token);
+        this.tokenStorage.saveUser(response.user);
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
+        this.loginFailed = false;
         this.router.navigate(['/profile']);
       },
-      error: err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
+      error => {
+        this.errorMessage = error.error.error || 'An error occurred during login.';
+        this.loginFailed = true;
       }
-    });
+    );
   }
   onCreateAccount(): void {
     this.router.navigate(['/register']);
   }
-
-  // reloadPage(): void {
-  //   window.location.reload();
-  // }
 }

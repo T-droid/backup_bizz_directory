@@ -7,35 +7,34 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
-  form: any = {
-    username: null,
-    email: null,
-    password: null
+export class RegisterComponent {
+    form: any = {
+    username: '',
+    email: '',
+    password: ''
   };
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authservice: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    
   }
-
   onSubmit(): void {
     const { username, email, password } = this.form;
 
-    this.authService.register(username, email, password).subscribe({
-      next: data => {
-        console.log(data);
+    this.authservice.register(username, email, password).subscribe(
+      response => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/login']);
       },
-      error: err => {
-        this.errorMessage = err.error.message;
+      error => {
+        this.errorMessage = error.error.message || 'An error occurred during registration.';
         this.isSignUpFailed = true;
       }
-    });
+    );
   }
 }

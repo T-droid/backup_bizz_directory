@@ -44,8 +44,11 @@ export class UserService {
     );
   }
 
+  enrollInProgram(categoryName: string) {
+    return this.http.post<any>(`${API_URL}/fitness_program/${categoryName}`, {});
+  }
+
   updateExerciseStatus(programId: number, exerciseId: number, status: boolean): Observable<any> {
-    // const url = `${API_URL}/programs/${programId}/exercises/${exerciseId}`;
     return this.http.put(API_URL, { status: status, exerciseId: exerciseId });
   }
 

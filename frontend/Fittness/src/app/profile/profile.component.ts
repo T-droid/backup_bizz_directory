@@ -11,16 +11,12 @@ export class ProfileComponent implements OnInit {
   username: string = '';
   enrolledPrograms: any[] = [];
 
-  constructor(private userservice: UserService) { }
+  constructor(private userservice: UserService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     // Fetch user data and enrolled programs from the backend
-    this.username = 'JohnDoe';
-    this.enrolledPrograms = [
-      { id: 1, name: 'Fitness Program 1' },
-      { id: 2, name: 'Fitness Program 2' },
-      // Add more enrolled programs as needed
-    ];
+    let user_id = this.tokenStorage.getUserId();
+    this.enrolledPrograms = [this.userservice.getEnrolledPrograms(user_id)]
   }
   deleteProgram(programId: number): void {
     // Call the program service to delete the program
