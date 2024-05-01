@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../_services/user.service';
 import { Router } from '@angular/router';
+import { TokenStorageService } from '../_services/token-storage.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -9,16 +11,18 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   categories: any[] = [];
+  userid: string | null = '';
 
-  constructor(private http: HttpClient, private user: UserService, private router: Router) { }
+  constructor(private http: HttpClient, private user: UserService, private router: Router, private tokenstorage: TokenStorageService) { }
 
   ngOnInit(): void {     
     // this.categories = this.user.getCategories();
+    this.userid = this.tokenstorage.getUserId()
     this.user.getCategories().subscribe(categories => {
       this.categories = categories;
 
       // Check if the user is enrolled in any program
-      this.user.getEnrolledPrograms(2).subscribe(enrolledPrograms => {
+      this.user.getEnrolledPrograms(this.userid).subscribe(enrolledPrograms => {
         enrolledPrograms.forEach(enrolledProgram => {
           const category = this.categories.find(category => category.id === enrolledProgram.categoryId);
           if (category) {
@@ -39,7 +43,7 @@ export class HomeComponent implements OnInit {
       // Redirect to progress update page
       this.router.navigate(['/update-progress', category.id]); // Update with your actual route
     } else {
-      this.user.enrollInProgram(category.name).subscribe(
+      this.user.enrollInProgram(category.name, this.userid).subscribe(
         response => {
           category.enrolled = true;
           console.log('Enrollment successful:', response);
@@ -47,7 +51,7 @@ export class HomeComponent implements OnInit {
         },
         error => {
           console.error('Enrollment failed:', error);
-          alert('Enrollment failed');
+          alert('User Already enrolled');
         }
       );
       

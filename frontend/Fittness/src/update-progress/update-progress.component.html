@@ -11,7 +11,7 @@
           <li *ngFor="let instruction of exercise.instructions">{{ instruction }}</li>
         </ul>
         <label>
-          <input type="checkbox" [checked]="exercise.status" (change)="toggleExerciseStatus(program.id, exercise.id, $event)">
+          <input type="checkbox" [checked]="exercise.status" (change)="toggleExerciseStatus(program.name, exercise, $event)">
           Done
         </label>
       </div>

@@ -11,21 +11,21 @@ export class TokenStorageService {
 
    // Function to set user ID in sessionStorage
    setUserId(userId: string): void {
-    sessionStorage.setItem('userId', userId);
+    localStorage.setItem('userId', userId);
   }
 
   // Function to get user ID from sessionStorage
   getUserId(): string | null {
-    return sessionStorage.getItem('userId');
+    return localStorage.getItem('userId');
   }
 
   // Function to clear user ID from sessionStorage (e.g., on logout)
   clearUserId(): void {
-    sessionStorage.removeItem('userId');
+    localStorage.removeItem('userId');
   }
 
   signOut(): void {
-    window.sessionStorage.clear();
+    this.clearUserId();
   }
 
   public saveToken(token: string): void {

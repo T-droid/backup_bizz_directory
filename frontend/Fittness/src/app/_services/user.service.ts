@@ -31,7 +31,7 @@ export class UserService {
     return this.http.get(API_URL + 'categories');
   }
   getEnrolledPrograms(userid: any): Observable<any[]> {
-    return this.http.get<any[]>(API_URL + 'enrolled_programs', { params: { userid } });
+    return this.http.get<any[]>(API_URL + `fitness_programs/${userid}`);
   }
 
   getEnrolledProgramDetails(programid: number, userid: any): Observable<any> {
@@ -44,12 +44,12 @@ export class UserService {
     );
   }
 
-  enrollInProgram(categoryName: string) {
-    return this.http.post<any>(`${API_URL}/fitness_program/${categoryName}`, {});
+  enrollInProgram(categoryName: string, user_id: string | null) {
+    return this.http.post<any>(`${API_URL}/fitness_program/${categoryName}`, {user_id: user_id});
   }
 
-  updateExerciseStatus(programId: number, exerciseId: number, status: boolean): Observable<any> {
-    return this.http.put(API_URL, { status: status, exerciseId: exerciseId });
+  updateExerciseStatus(program_name: string, exercise_type: string, user_id: string | null, status: boolean): Observable<any> {
+    return this.http.put(`${API_URL}fitnessProgress/`, { user_id: user_id, program_name: program_name, status: status, exercise_type: exercise_type });
   }
 
   deleteProgram(programId: number): Observable<void> {

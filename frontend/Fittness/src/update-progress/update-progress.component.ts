@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+
 @Component({
   selector: 'app-update-progress',
   templateUrl: './update-progress.component.html',
@@ -11,20 +12,27 @@ import { TokenStorageService } from 'src/app/_services/token-storage.service';
 export class UpdateProgressComponent implements OnInit {
   enrolledPrograms: any[] = [];
   selectedProgramId: number | null = null;
-  constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
+  user_id: string | null = '';
+  categoryId: any;
+  constructor(private userService: UserService, private tokenStorage: TokenStorageService, private Actroute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.Actroute.paramMap.subscribe(params => {
+      this.categoryId = Number(params.get('id'));
+  });
     // Fetch enrolled programs for the current user
-    const userId = 'current_user_id'; // Replace 'current_user_id' with the actual user ID
+    this.user_id = this.tokenStorage.getUserId();
     this.loadEnrolledPrograms()
    
     
   }
   loadEnrolledPrograms(): void {
-    let user_id = this.tokenStorage.getUserId();
-    this.userService.getEnrolledPrograms(user_id).subscribe(
+    this.userService.getEnrolledPrograms(this.user_id).subscribe(
       (data: any[]) => {
-        this.enrolledPrograms = data;
+        const program = data.find(item => item.id === this.categoryId);
+        if (program) {
+          this.enrolledPrograms = program;
+        }
       },
       (error) => {
         console.error('Error loading enrolled programs:', error);
@@ -32,12 +40,12 @@ export class UpdateProgressComponent implements OnInit {
     );
   }
 
-  toggleExerciseStatus(programId: number, exerciseId: number, event: Event): void {
+  toggleExerciseStatus(programName: string, exerciseType: string, event: Event): void {
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
 
     // Call the updateExerciseStatus method from the service
-    this.userService.updateExerciseStatus(programId, exerciseId, checked).subscribe(
+    this.userService.updateExerciseStatus(programName, exerciseType, this.user_id, checked).subscribe(
       response => {
         console.log('Exercise status updated successfully:', response);
       },
