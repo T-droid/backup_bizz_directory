@@ -14,14 +14,20 @@ export class UpdateProgressComponent implements OnInit {
   selectedProgramId: number | null = null;
   user_id: string | null = '';
   categoryId: any;
+  categoryName: any;
   constructor(private userService: UserService, private tokenStorage: TokenStorageService, private Actroute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.Actroute.paramMap.subscribe(params => {
       this.categoryId = Number(params.get('id'));
+      console.log(this.categoryId);
   });
     // Fetch enrolled programs for the current user
     this.user_id = this.tokenStorage.getUserId();
+    this.userService.getCategories().subscribe(categori => {
+      const categories = categori;
+      this.categoryName = categories.find(member => member.id === this.categoryId)
+    });
     this.loadEnrolledPrograms()
    
     
@@ -29,7 +35,7 @@ export class UpdateProgressComponent implements OnInit {
   loadEnrolledPrograms(): void {
     this.userService.getEnrolledPrograms(this.user_id).subscribe(
       (data: any[]) => {
-        const program = data.find(item => item.id === this.categoryId);
+        const program = data.find(item => item.name === this.categoryName);
         if (program) {
           this.enrolledPrograms = program;
         }
