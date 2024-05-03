@@ -38,10 +38,25 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveUser(response.user);
         this.isLoggedIn = true;
         this.loginFailed = false;
-        this.router.navigate(['/profile']);
+        alert(response.message);
+        this.router.navigate(['/home']);
       },
       error => {
-        this.errorMessage = error.error.error || 'An error occurred during login.';
+        if (error && error.error && error.error.error) {
+          switch (error.error.error) {
+            case 'User does not exist':
+              this.errorMessage = 'User not found. Please check your email.';
+              break;
+            case 'Incorrect password':
+              this.errorMessage = 'Incorrect password. Please try again.';
+              break;
+            default:
+              this.errorMessage = 'An error occurred. Please try again later.';
+              break;
+          }
+        } else {
+          this.errorMessage = 'An error occurred. Please try again later.';
+        }
         this.loginFailed = true;
       }
     );
